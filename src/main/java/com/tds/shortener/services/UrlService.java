@@ -5,6 +5,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface UrlService {
-    public Url generateShortUrl(String url);
-    public Url getEncodedUrl(String url);
+    Url generateShortUrl(String url);
+    String getEncodedUrl(String url);
 }
