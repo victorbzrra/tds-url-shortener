@@ -4,12 +4,16 @@ import com.tds.shortener.entities.Url;
 import com.tds.shortener.entities.UrlErrorResDto;
 import com.tds.shortener.entities.UrlResponseDto;
 import com.tds.shortener.services.UrlService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Objects;
+
+import static org.springframework.http.HttpStatus.MOVED_PERMANENTLY;
 
 @RestController
 public class ShortenerController {
@@ -29,22 +33,22 @@ public class ShortenerController {
             urlResponseDto.setShortUrl(urlToRes.getShortUrl());
             urlResponseDto.setAccess(urlToRes.getAccess().toString());
 
-            return new ResponseEntity<UrlResponseDto>(urlResponseDto, HttpStatus.OK);
+            return new ResponseEntity<>(urlResponseDto, HttpStatus.OK);
         }
 
         UrlErrorResDto urlErrorResDto = new UrlErrorResDto();
         urlErrorResDto.setStatus("404");
         urlErrorResDto.setError("Error occurred while processing the request, try again!");
-        return new ResponseEntity<UrlErrorResDto>(urlErrorResDto, HttpStatus.OK);
+        return new ResponseEntity<>(urlErrorResDto, HttpStatus.OK);
     }
 
     @GetMapping("/{shortUrl}")
-    public ResponseEntity<?> redirectToOriginalUrl(@PathVariable String shortUrl) {
+    public ResponseEntity<?> redirectToOriginalUrl(@PathVariable String shortUrl) throws URISyntaxException {
         if(shortUrl.isEmpty()) {
             UrlErrorResDto urlErrorResDto = new UrlErrorResDto();
             urlErrorResDto.setStatus("400");
             urlErrorResDto.setError("Invalid url, try again!");
-            return new ResponseEntity<UrlErrorResDto>(urlErrorResDto, HttpStatus.OK);
+            return new ResponseEntity<>(urlErrorResDto, HttpStatus.OK);
         }
 
         Url urlToRes = urlService.getEncodedUrl(shortUrl);
@@ -53,9 +57,14 @@ public class ShortenerController {
             UrlErrorResDto urlErrorResDto = new UrlErrorResDto();
             urlErrorResDto.setStatus("400");
             urlErrorResDto.setError("Url does not exist, try again!");
-            return new ResponseEntity<UrlErrorResDto>(urlErrorResDto, HttpStatus.OK);
+            return new ResponseEntity<>(urlErrorResDto, HttpStatus.OK);
         }
 
+        URI uri = new URI(urlToRes.getOriginalUrl());
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(uri);
 
+        urlToRes.setAccess(urlToRes.getAccess() + 1);
+        return new ResponseEntity<>(httpHeaders, MOVED_PERMANENTLY);
     }
 }
