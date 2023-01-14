@@ -11,6 +11,10 @@ public class UrlResponseDto {
         this.access = access;
     }
 
+    public UrlResponseDto() {
+
+    }
+
     public String getOriginalUrl() {
         return originalUrl;
     }
@@ -27,13 +31,9 @@ public class UrlResponseDto {
         this.shortUrl = shortUrl;
     }
 
-    public String getAccess() {
-        return access;
-    }
+    public String getAccess() { return access; }
 
-    public void setAccess(String access) {
-        this.access = access;
-    }
+    public void setAccess(String access) { this.access = access; }
 
     @Override
     public String toString() {

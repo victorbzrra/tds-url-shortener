@@ -1,9 +1,6 @@
 package com.tds.shortener.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
+import jakarta.persistence.*;
 
 @Entity
 public class Url {
@@ -15,15 +12,15 @@ public class Url {
     private String shortUrl;
     private Integer access;
 
-    public Url(long id, String originalUrl, String shortUrl) {
+    public Url(long id, String originalUrl, String shortUrl, Integer access) {
         this.id = id;
         this.originalUrl = originalUrl;
         this.shortUrl = shortUrl;
-        this.access = 0;
+        this.access = access;
     }
 
     public Url() {
-
+        this.access = 0;
     }
 
     public long getId() {

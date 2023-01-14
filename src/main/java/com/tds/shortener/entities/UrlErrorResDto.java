@@ -9,6 +9,10 @@ public class UrlErrorResDto {
         this.error = error;
     }
 
+    public UrlErrorResDto() {
+
+    }
+
     public String getStatus() {
         return status;
     }
