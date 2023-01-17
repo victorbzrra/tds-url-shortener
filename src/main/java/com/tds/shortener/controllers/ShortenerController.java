@@ -1,6 +1,7 @@
 package com.tds.shortener.controllers;
 
-import com.tds.shortener.entities.Url;
+import com.tds.shortener.entities.UrlBodyDto;
+import com.tds.shortener.entities.UrlResDto;
 import com.tds.shortener.services.UrlService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,8 @@ public class ShortenerController {
     }
 
     @PostMapping("/shorten")
-    public Url generateShortUrl(@RequestBody String url) {
-        return urlService.generateShortUrl(url);
+    public UrlResDto generateShortUrl(@RequestBody UrlBodyDto urlBody) {
+        return UrlResDto.urlToUrlResDto(urlService.generateShortUrl(urlBody.getUrl()));
     }
 
     @GetMapping("/{shortUrl}")

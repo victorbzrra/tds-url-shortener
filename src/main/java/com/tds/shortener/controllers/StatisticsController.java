@@ -1,5 +1,6 @@
 package com.tds.shortener.controllers;
 
+import com.tds.shortener.entities.AccessDto;
 import com.tds.shortener.entities.StatsDto;
 import com.tds.shortener.services.UrlService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +23,7 @@ public class StatisticsController {
     }
 
     @GetMapping("/{shortUrl}")
-    public Integer getAccessByShortUrl(@PathVariable String shortUrl) {
-        return urlService.getAccessByShortUrl(shortUrl);
+    public AccessDto getAccessByShortUrl(@PathVariable String shortUrl) {
+        return AccessDto.accessToAccessDto(urlService.getAccessByShortUrl(shortUrl));
     }
 }
