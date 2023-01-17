@@ -1,11 +1,11 @@
 package com.tds.shortener.entities;
 
 public class UrlResDto {
-    private String orignalUrl;
+    private String originalUrl;
     private String shortUrl;
 
-    public UrlResDto(String orignalUrl, String shortUrl) {
-        this.orignalUrl = orignalUrl;
+    public UrlResDto(String originalUrl, String shortUrl) {
+        this.originalUrl = originalUrl;
         this.shortUrl = shortUrl;
     }
 
@@ -16,12 +16,12 @@ public class UrlResDto {
         return new UrlResDto(url.getOriginalUrl(), url.getShortUrl());
     }
 
-    public String getOrignalUrl() {
-        return orignalUrl;
+    public String getOriginalUrl() {
+        return originalUrl;
     }
 
-    public void setOrignalUrl(String orignalUrl) {
-        this.orignalUrl = orignalUrl;
+    public void setOriginalUrl(String originalUrl) {
+        this.originalUrl = originalUrl;
     }
 
     public String getShortUrl() {
@@ -35,7 +35,7 @@ public class UrlResDto {
     @Override
     public String toString() {
         return "UrlResDto{" +
-                "orignalUrl='" + orignalUrl + '\'' +
+                "orignalUrl='" + originalUrl + '\'' +
                 ", shortUrl='" + shortUrl + '\'' +
                 '}';
     }
