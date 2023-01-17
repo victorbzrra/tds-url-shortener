@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UrlServiceImpl implements UrlService {
@@ -42,8 +44,11 @@ public class UrlServiceImpl implements UrlService {
 
     @Override
     public String getEncodedUrl(String url) {
-        Url urlToRes = urlRepository.findByShortUrl(url)
-                .orElseThrow(() -> new NotFound("Url not found, try again!"));
+        Url urlToRes = urlRepository.findByShortUrl(url);
+
+        if(Objects.isNull(urlToRes)) {
+            throw new NotFound("Url not found, try again!");
+        }
 
         return saveNewAccess(urlToRes).getOriginalUrl();
     }
@@ -51,5 +56,15 @@ public class UrlServiceImpl implements UrlService {
     private Url saveNewAccess(Url url) {
         url.setAccess(url.getAccess() + 1);
         return urlRepository.save(url);
+    }
+
+    @Override
+    public List<Url> getAllAccess() {
+        return urlRepository.findAll();
+    }
+
+    @Override
+    public Integer getAccessByShortUrl(String url) {
+        return urlRepository.findByShortUrl(url).getAccess();
     }
 }
